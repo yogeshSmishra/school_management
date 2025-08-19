@@ -1,21 +1,12 @@
-
-// db.js
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// Support both custom DB_* vars and Railway's MYSQL* vars
-const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST || 'localhost';
-const DB_PORT = process.env.DB_PORT || process.env.MYSQLPORT || 3306;
-const DB_USER = process.env.DB_USER || process.env.MYSQLUSER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '';
-const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE || 'school_db';
-
 const pool = mysql.createPool({
-  host: DB_HOST,
-  port: DB_PORT,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -25,22 +16,16 @@ const pool = mysql.createPool({
 });
 
 async function init() {
-  const createTable = `
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS schools (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      address VARCHAR(500) NOT NULL,
-      latitude DECIMAL(9,6) NOT NULL,
-      longitude DECIMAL(9,6) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-  `;
-  const conn = await pool.getConnection();
-  try {
-    await conn.query(createTable);
-  } finally {
-    conn.release();
-  }
+      address VARCHAR(255) NOT NULL,
+      latitude FLOAT NOT NULL,
+      longitude FLOAT NOT NULL
+    )
+  `);
+  console.log("✅ Database initialized");
 }
 
 module.exports = { pool, init };
