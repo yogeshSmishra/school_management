@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "School API",
+    "_postman_id": "a8d4f7d6-8f17-4b9f-8e1b-collection",
+    "description": "APIs for adding schools and listing schools by proximity.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add School",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Springfield Elementary\",\n  \"address\": \"742 Evergreen Terrace, Springfield\",\n  \"latitude\": 19.076,\n  \"longitude\": 72.8777\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/addSchool",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "addSchool"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List Schools",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/listSchools?lat=19.076&lng=72.8777",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "listSchools"
+          ],
+          "query": [
+            {
+              "key": "lat",
+              "value": "19.076"
+            },
+            {
+              "key": "lng",
+              "value": "72.8777"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
